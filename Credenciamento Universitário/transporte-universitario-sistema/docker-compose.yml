@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: transporte_universitario
+      POSTGRES_USER: transporte
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-transporte_local}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - transporte_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U transporte -d transporte_universitario"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgres://transporte:${POSTGRES_PASSWORD:-transporte_local}@db:5432/transporte_universitario
+      SEED_DEMO: "true"
+      APP_TIME_ZONE: America/Fortaleza
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-c", "npm run db:setup && npm start"]
+volumes:
+  transporte_pgdata:

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1e293b"><meta name="description" content="Sistema de Transporte Universitário — MVP acadêmico integrado">
+<title>Transporte Universitário | Sistema MVP</title>
+<link rel="stylesheet" href="/styles.css">
+<script type="module" src="/app.js"></script>
+</head>
+<body>
+<section id="loginScreen" class="login-shell">
+  <div class="hero">
+    <div class="brand"><div class="brandmark">🚌</div><span>Transporte Universitário</span></div>
+    <div><div class="eyebrow" style="color:#fbbf24">Sistema acadêmico · MVP integrado</div><h1>Seu transporte,<br><span>mais organizado.</span></h1><p>Rotas por data, consultas de horários, avisos, calendário e suporte, com autenticação por perfil e dados armazenados no PostgreSQL.</p></div>
+    <div class="tagline"><span>◈ Rotas diárias</span><span>◈ Consulta automática e manual</span><span>◈ Administração de veículos</span></div>
+  </div>
+  <div class="login-side"><div class="login-card">
+    <div class="eyebrow">Acesso à demonstração integrada</div><h2>Entrar no sistema</h2><p class="muted" style="font-size:14px;margin:0 0 20px">Utilize uma conta cadastrada ou um dos perfis de demonstração.</p>
+    <form id="loginForm"><div class="form-group"><label for="loginEmail">E-mail</label><input id="loginEmail" name="email" type="email" required placeholder="usuario@transporte.local" autocomplete="username"></div>
+      <div class="form-group"><label for="loginPassword">Senha</label><input id="loginPassword" name="password" type="password" required placeholder="Digite sua senha" autocomplete="current-password"></div>
+      <p class="error" id="loginError" role="alert"></p><button class="btn btn-main full" type="submit">Entrar →</button>
+    </form>
+    <p class="help" style="margin-top:14px">Credenciais apenas para ambiente de demonstração:</p>
+    <div class="login-credentials">
+      <button class="credential" data-demo="admin" type="button"><strong>⚙️ Administrador</strong><small>Preencher dados demo</small></button>
+      <button class="credential" data-demo="student" type="button"><strong>🎓 Universitário</strong><small>Preencher dados demo</small></button>
+      <button class="credential" data-demo="driver" type="button"><strong>🚌 Motorista</strong><small>Preencher dados demo</small></button>
+    </div>
+    <div class="banner">🔐 A autenticação e as permissões são verificadas pelo servidor. As credenciais demonstrativas devem ser desativadas antes de qualquer publicação real.</div>
+  </div></div>
+</section>
+<div id="app" class="app shell">
+  <aside class="sidebar"><div class="brand"><div class="brandmark">🚌</div><div>Transporte<br>Universitário</div></div><div><div class="sidetitle">Navegação</div><div class="sidegroup" id="sideNav"></div></div><div class="sidefoot"><div class="logo-caption">PROJETO ACADÊMICO · SISTEMA MVP</div><button class="nav-btn" data-logout style="margin-top:10px">↩ &nbsp; Encerrar sessão</button></div></aside>
+  <div class="app-main"><header class="topbar"><div><h1 id="topTitle">Painel</h1><p id="topSubtitle">Sistema integrado</p></div><div class="top-actions"><span class="pill warn">● Ambiente local</span><div class="avatar"><div class="circle-avatar" id="avatar">U</div><span id="profileText">Usuário</span></div><button class="btn btn-outline btn-small" data-logout>Sair</button></div></header>
+    <main class="main-content"><div id="content" class="page active"></div><p class="demo-note">ℹ Sistema acadêmico integrado. Os dados persistem no PostgreSQL; horários são previstos, não rastreamento em tempo real.</p></main>
+    <footer class="footnote"><span>Sistema de Transporte Universitário · MVP integrado</span><span>HTML + CSS + JavaScript · Node.js · PostgreSQL</span></footer>
+  </div><nav class="mobilebar" id="mobileNav" aria-label="Navegação principal"></nav>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+name: Testar MVP integrado
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: transporte_universitario
+          POSTGRES_USER: transporte
+          POSTGRES_PASSWORD: transporte_local
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U transporte -d transporte_universitario"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 15
+    env:
+      DATABASE_URL: postgres://transporte:transporte_local@localhost:5432/transporte_universitario
+      SEED_DEMO: 'true'
+      APP_TIME_ZONE: America/Fortaleza
+      PORT: 3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npm run db:setup
+      - name: Iniciar servidor e verificar saúde
+        run: |
+          npm start > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://localhost:3000/api/health; then exit 0; fi
+            sleep 1
+          done
+          cat server.log
+          exit 1
+      - run: RUN_INTEGRATION=true npm run test:integration
